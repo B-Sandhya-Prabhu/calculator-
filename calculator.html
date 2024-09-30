@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Calculator</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      width: 300px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 10px;
+      background-color: #fff;
+    }
+
+    .display {
+      grid-column: span 4;
+      height: 50px;
+      background-color: #222;
+      color: #fff;
+      font-size: 24px;
+      text-align: right;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .btn {
+      font-size: 20px;
+      padding: 20px;
+      border: none;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #ddd;
+    }
+
+    .operator {
+      background-color: #f39c12;
+      color: #fff;
+    }
+
+    .operator:hover {
+      background-color: #e67e22;
+    }
+
+    .equal {
+      grid-column: span 4;
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    .equal:hover {
+      background-color: #27ae60;
+    }
+
+    #clear {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    #clear:hover {
+      background-color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" class="display" disabled />
+    <div class="buttons">
+      <button class="btn" value="7">7</button>
+      <button class="btn" value="8">8</button>
+      <button class="btn" value="9">9</button>
+      <button class="btn operator" value="/">/</button>
+      <button class="btn" value="4">4</button>
+      <button class="btn" value="5">5</button>
+      <button class="btn" value="6">6</button>
+      <button class="btn operator" value="*">*</button>
+      <button class="btn" value="1">1</button>
+      <button class="btn" value="2">2</button>
+      <button class="btn" value="3">3</button>
+      <button class="btn operator" value="-">-</button>
+      <button class="btn" value="0">0</button>
+      <button class="btn" value=".">.</button>
+      <button class="btn" id="clear">C</button>
+      <button class="btn operator" value="+">+</button>
+      <button class="btn equal" id="equal">=</button>
+    </div>
+  </div>
+
+  <script>
+    // Get all buttons and display
+    const buttons = document.querySelectorAll('.btn');
+    const display = document.getElementById('display');
+    const clearButton = document.getElementById('clear');
+    const equalButton = document.getElementById('equal');
+
+    let currentInput = '';
+    let operator = '';
+    let previousInput = '';
+
+    // Handle button clicks
+    buttons.forEach(button => {
+      button.addEventListener('click', function () {
+        const value = this.value;
+
+        if (value === '/' || value === '*' || value === '-' || value === '+') {
+          operator = value;
+          previousInput = currentInput;
+          currentInput = '';
+        } else {
+          currentInput += value;
+        }
+
+        display.value = currentInput || previousInput + operator;
+      });
+    });
+
+    // Handle equal button click
+    equalButton.addEventListener('click', function () {
+      if (previousInput && currentInput && operator) {
+        const result = eval(previousInput + operator + currentInput);
+        display.value = result;
+        currentInput = result;
+        operator = '';
+        previousInput = '';
+      }
+    });
+
+    // Handle clear button click
+    clearButton.addEventListener('click', function () {
+      currentInput = '';
+      previousInput = '';
+      operator = '';
+      display.value = '';
+    });
+  </script>
+</body>
+</html>
+
